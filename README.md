@@ -1,1 +1,1 @@
-# stormhacks2024-cruize
+# stormhacks2024-cruz
