@@ -32,7 +32,7 @@ export default function RidePage() {
       />
       {currentView === "rating" && (
         <>
-          <div className="absolute top-[21%] left-[46%] transform -translate-x-1/2 flex space-x-2">
+          <div className="absolute top-[21%] left-[49%] transform -translate-x-1/2 flex space-x-2">
             {[...Array(5)].map((_, index) => (
               <Image
                 key={index}
