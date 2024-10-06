@@ -6,6 +6,7 @@ import { auth, db } from '../../lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import BlueTextbox from '../components/BlueTextbox';
 import { Loader } from "@googlemaps/js-api-loader";
+import { useRouter } from 'next/navigation';
 
 export default function RidePage() {
   const [userName, setUserName] = useState('');
@@ -13,6 +14,7 @@ export default function RidePage() {
   const [currentView, setCurrentView] = useState('home');
   const [currentLocation, setCurrentLocation] = useState('');
   const destinationInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -53,7 +55,6 @@ export default function RidePage() {
   }, []);
 
   useEffect(() => {
-
     if (currentView === 'finding') {
       const timer = setTimeout(() => {
         setCurrentView('alan');
@@ -77,6 +78,7 @@ export default function RidePage() {
 
       return () => clearTimeout(timer);
     }
+
     if (currentView === 'location') {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -90,7 +92,7 @@ export default function RidePage() {
             // Use Google Maps Geocoding API to get a human-readable address
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ location: currentPosition }, (results, status) => {
-              if (status === 'OK' && results[0]) {
+              if (status === 'OK' && results && results[0]) {
                 setCurrentLocation(results[0].formatted_address);
               } else {
                 console.error('Geocoder failed due to: ' + status);
@@ -107,7 +109,6 @@ export default function RidePage() {
         console.error('Geolocation is not supported by this browser.');
         setCurrentLocation('Geolocation not supported');
       }
-
     }
   }, [currentView]);
 
@@ -130,8 +131,7 @@ export default function RidePage() {
   };
 
   const handleConfirmArrivalClick = () => {
-    // Handle arrival confirmation logic here
-    console.log('Arrival confirmed');
+    router.push('/swipe');
   };
 
   return (
