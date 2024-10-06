@@ -7,6 +7,7 @@ import { auth, db } from '../../lib/firebase';
 import Textbox from '../components/Textbox';
 import { doc, setDoc } from 'firebase/firestore';
 import { useSwipeable } from 'react-swipeable';
+import RidePage from '../ride/page';
 
 export default function Login() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,7 +17,7 @@ export default function Login() {
   const [isMajorSaved, setIsMajorSaved] = useState(false);
   const [isDreamVacationSaved, setIsDreamVacationSaved] = useState(false);
   const [isInstagramSaved, setIsInstagramSaved] = useState(false);
-  const [currentView, setCurrentView] = useState('name'); // 'name', 'year', 'major', 'dream-vacation', 'instagram', or 'welcome'
+  const [currentView, setCurrentView] = useState('name'); // 'name', 'year', 'major', 'dream-vacation', 'instagram', 'welcome', or 'ride'
   const [textboxKey, setTextboxKey] = useState(0);
 
   const handleGoogleAuth = async (isSignUp: boolean) => {
@@ -128,6 +129,8 @@ export default function Login() {
         setTextboxKey(prev => prev + 1);
       } else if (currentView === 'instagram' && isInstagramSaved) {
         setCurrentView('welcome');
+      } else if (currentView === 'welcome') {
+        setCurrentView('ride');
       }
     },
     onSwipedRight: () => {
@@ -145,6 +148,8 @@ export default function Login() {
         setTextboxKey(prev => prev + 1);
       } else if (currentView === 'welcome') {
         setCurrentView('instagram');
+      } else if (currentView === 'ride') {
+        setCurrentView('welcome');
       }
     },
     trackMouse: true
@@ -179,6 +184,12 @@ export default function Login() {
       setIsDreamVacationSaved(false);
     }
   }, [currentView]);
+
+  const handleManualScroll = () => {
+    if (currentView === 'welcome') {
+      setCurrentView('ride');
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#FBFEF9]">
@@ -238,26 +249,16 @@ export default function Login() {
               </>
             )}
             {currentView === 'welcome' && (
-              <Image src="/assets/welcome.png" alt="Welcome" width={500} height={300} />
+              <div onClick={handleManualScroll}>
+                <Image src="/assets/welcome.png" alt="Welcome" width={500} height={300} />
+              </div>
+            )}
+            {currentView === 'ride' && (
+              <RidePage />
             )}
           </>
         )}
       </div>
-      {isLoggedIn && (
-        <div className="mt-4 text-sm text-gray-600">
-          {currentView === 'name' ? 
-            (isNameSaved ? 'Swipe left to continue' : 'Enter your name and press Enter') : 
-            currentView === 'year' ?
-            (isYearSaved ? 'Swipe left to continue or right to go back' : 'Enter your year and press Enter') :
-            currentView === 'major' ?
-            (isMajorSaved ? 'Swipe left to continue or right to go back' : 'Enter your major and press Enter') :
-            currentView === 'dream-vacation' ?
-            (isDreamVacationSaved ? 'Swipe left to continue or right to go back' : 'Enter your dream vacation and press Enter') :
-            currentView === 'instagram' ?
-            (isInstagramSaved ? 'Swipe left to continue or right to go back' : 'Enter your Instagram handle and press Enter') :
-            'Swipe right to go back'}
-        </div>
-      )}
     </div>
   );
 }
