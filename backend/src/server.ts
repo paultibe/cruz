@@ -1,7 +1,7 @@
 /// <reference types="node" />
 
 import express, { Express, Request, Response, NextFunction } from "express";
-import cors from "cors"; // test
+import cors from "cors"; // test 2
 
 const app = express();
 const port = process.env.PORT || 3000;
