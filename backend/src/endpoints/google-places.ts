@@ -1,21 +1,21 @@
-import express from 'express';
+import express from "express";
 
 const router = express.Router();
 
 router.use(express.json());
 
-// Add your route handlers here
-// For example:
-// router.get('/some-endpoint', (req, res) => { ... });
+// Mock data
+const userData = {
+  dreamVacation: "bali, indonesia",
+  id: 1,
+  location: [49.2799, 122.9199],
+  major: "psychology",
+  name: "Alan",
+  year: 3
+};
 
-router.post('/assign-driver', (req, res) => {
-  // For now, we're hardcoding the driver
-  const driver = {
-    name: "Kashish Garg",
-    // You can add more driver details here if needed
-  };
-
-  res.json(driver);
+router.get("/", (req, res) => {
+  res.json(userData);
 });
 
 export default router;
