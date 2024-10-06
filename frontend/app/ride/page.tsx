@@ -32,11 +32,27 @@ export default function RidePage() {
     }
   };
 
+  const handleCheckButtonClick = () => {
+    setCurrentView('mode');
+  };
+
   return (
     <div className="relative w-[393px] h-[852px]">
       <Image
-        src={currentView === 'home' ? "/assets/home.png" : "/assets/location.png"}
-        alt={currentView === 'home' ? "Home" : "Location"}
+        src={
+          currentView === 'home'
+            ? "/assets/home.png"
+            : currentView === 'location'
+            ? "/assets/location.png"
+            : "/assets/mode.png"
+        }
+        alt={
+          currentView === 'home'
+            ? "Home"
+            : currentView === 'location'
+            ? "Location"
+            : "Mode"
+        }
         layout="fill"
         objectFit="cover"
         priority
@@ -70,16 +86,23 @@ export default function RidePage() {
         <>
           <div className="absolute top-[53%] left-[55%] transform -translate-x-1/2 flex flex-col items-center space-y-4 z-10">
             <BlueTextbox
+              placeholder="current location"
+              onChange={(value) => setSecondDestination(value)}
+            />
+            <BlueTextbox
               givenText={destination}
               onChange={(value) => setDestination(value)}
             />
-            <BlueTextbox
-              placeholder="enter pickup location"
-              onChange={(value) => setSecondDestination(value)}
-            />
           </div>
-          <div className="absolute bottom-20 left-[55%] transform -translate-x-1/2 text-black text-6xl font-bold z-20">
-            NOW!
+          <div className="absolute bottom-[16.5%] right-[10%] z-10">
+            <button onClick={handleCheckButtonClick}>
+              <Image
+                src="/assets/checkbutton.png"
+                alt="Check Button"
+                width={70}
+                height={70}
+              />
+            </button>
           </div>
         </>
       )}
