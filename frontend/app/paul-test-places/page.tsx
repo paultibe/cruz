@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
+import axios from 'axios';
 
 const Page = () => {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -81,7 +82,7 @@ const Page = () => {
     initMap();
   }, []);
 
-  const handleRequest = () => {
+  const handleRequest = async () => {
     if (directionsService && directionsRenderer && pickupInputRef.current && dropoffInputRef.current) {
       const request: google.maps.DirectionsRequest = {
         origin: pickupInputRef.current.value,
@@ -95,8 +96,15 @@ const Page = () => {
         }
       });
 
-      // Hardcoded driver assignment
-      setDriverName("John Doe");
+      try {
+        // Make a call to the backend to assign a driver
+        const response = await axios.post('http://localhost:3000/api/google-places/assign-driver');
+        const driver = response.data;
+        setDriverName(driver.name);
+      } catch (error) {
+        console.error('Error assigning driver:', error);
+        setDriverName('Error assigning driver');
+      }
     }
   };
 
