@@ -3,6 +3,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import axios from 'axios';
 
+interface UserData {
+  dreamVacation: string;
+  id: number;
+  location: [number, number];
+  major: string;
+  name: string;
+  year: number;
+}
+
 const Page = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const pickupInputRef = useRef<HTMLInputElement>(null);
@@ -11,6 +20,7 @@ const Page = () => {
   const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService | null>(null);
   const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer | null>(null);
   const [driverName, setDriverName] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
     const initMap = async () => {
@@ -80,7 +90,17 @@ const Page = () => {
     };
 
     initMap();
+    fetchUserData();
   }, []);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/api/google-places');
+      setUserData(response.data);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
 
   const handleRequest = async () => {
     if (directionsService && directionsRenderer && pickupInputRef.current && dropoffInputRef.current) {
@@ -132,6 +152,16 @@ const Page = () => {
       {driverName && (
         <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
           Your driver is {driverName}
+        </div>
+      )}
+      {userData && (
+        <div className="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded">
+          <h2 className="text-xl font-bold mb-2">User Profile</h2>
+          <p><strong>Name:</strong> {userData.name}</p>
+          <p><strong>Major:</strong> {userData.major}</p>
+          <p><strong>Year:</strong> {userData.year}</p>
+          <p><strong>Dream Vacation:</strong> {userData.dreamVacation}</p>
+          <p><strong>Location:</strong> {userData.location.join(', ')}</p>
         </div>
       )}
     </div>
