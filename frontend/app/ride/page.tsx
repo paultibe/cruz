@@ -10,7 +10,7 @@ export default function RidePage() {
   const [userName, setUserName] = useState('');
   const [destination, setDestination] = useState('');
   const [currentView, setCurrentView] = useState('home');
-  const [secondDestination, setSecondDestination] = useState('');
+  const [currentLocation, setCurrentLocation] = useState('');
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -87,14 +87,14 @@ export default function RidePage() {
           <div className="absolute top-[53%] left-[55%] transform -translate-x-1/2 flex flex-col items-center space-y-4 z-10">
             <BlueTextbox
               placeholder="current location"
-              onChange={(value) => setSecondDestination(value)}
+              onChange={(value) => setCurrentLocation(value)}
             />
             <BlueTextbox
               givenText={destination}
               onChange={(value) => setDestination(value)}
             />
           </div>
-          <div className="absolute bottom-[16.5%] right-[10%] z-10">
+          <div className="absolute bottom-[16%] right-[10%] z-10">
             <button onClick={handleCheckButtonClick}>
               <Image
                 src="/assets/checkbutton.png"
@@ -105,6 +105,18 @@ export default function RidePage() {
             </button>
           </div>
         </>
+      )}
+      {currentView === 'mode' && (
+        <div className="absolute top-[8.5%] left-[55%] transform -translate-x-1/2 flex flex-col items-center space-y-4 z-10">
+          <BlueTextbox
+            givenText={currentLocation}
+            onChange={(value) => setCurrentLocation(value)}
+          />
+          <BlueTextbox
+            givenText={destination}
+            onChange={(value) => setDestination(value)}
+          />
+        </div>
       )}
     </div>
   );
