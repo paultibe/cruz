@@ -76,7 +76,7 @@ export default function RidePage() {
       }, 2000);
 
       return () => clearTimeout(timer);
-
+    }
     if (currentView === 'location') {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
