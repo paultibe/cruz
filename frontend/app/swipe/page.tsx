@@ -10,6 +10,7 @@ export default function RidePage() {
 
   const handlers = useSwipeable({
     onSwipedRight: () => setCurrentView("match"),
+    onSwipedLeft: () => setCurrentView("rating"),
     trackMouse: true,
   });
 
@@ -30,7 +31,7 @@ export default function RidePage() {
         objectFit="cover"
         priority
       />
-      {currentView === "rating" && (
+      {currentView === "rating" ? (
         <>
           <div className="absolute top-[21%] left-[49%] transform -translate-x-1/2 flex space-x-2">
             {[...Array(5)].map((_, index) => (
@@ -53,6 +54,15 @@ export default function RidePage() {
             Swipe right to see your match!
           </div>
         </>
+      ) : (
+        <div className="absolute top-[48%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80%] h-[60%]">
+          <Image
+            src="/assets/card photo.png"
+            alt="Card Photo"
+            fill
+            style={{ objectFit: 'contain' }}
+          />
+        </div>
       )}
     </div>
   );
