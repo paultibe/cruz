@@ -9,6 +9,7 @@ const Page = () => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService | null>(null);
   const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer | null>(null);
+  const [driverName, setDriverName] = useState<string | null>(null);
 
   useEffect(() => {
     const initMap = async () => {
@@ -93,6 +94,9 @@ const Page = () => {
           directionsRenderer.setDirections(result);
         }
       });
+
+      // Hardcoded driver assignment
+      setDriverName("John Doe");
     }
   };
 
@@ -117,6 +121,11 @@ const Page = () => {
       >
         Request
       </button>
+      {driverName && (
+        <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+          Your driver is {driverName}
+        </div>
+      )}
     </div>
   );
 };

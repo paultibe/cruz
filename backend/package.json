@@ -1,12 +1,18 @@
 {
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.0",
-    "ts-node": "^10.9.2"
+    "express": "^4.21.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
-    "@types/node": "^22.7.4"
+    "@types/node": "^22.7.4",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2"
+  },
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec \"npx ts-node\" src/server.ts",
+    "build": "tsc"
   }
 }
